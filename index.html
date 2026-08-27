@@ -805,7 +805,7 @@
                     <div class="card-panel" style="text-align: center; background: rgba(255, 170, 0, 0.03); border: 1px solid rgba(255, 170, 0, 0.2);">
                         <h3 style="font-size: 1rem; font-weight:600; color: var(--accent-gold);">🎰 Neo Fruit Slots</h3>
                         <!-- Deskripsi diperbarui agar sesuai logika acak terbaru -->
-                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 8px;">3 Buah = Dapatkan Reward Koin! 4 Buah = Dapatkan Reward Diamond!</p>
+                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 8px;">3 Buah = Mendapat Reward Koin! 4 Buah = Mendapat Reward Diamond!</p>
                         
                         <div class="slot-machine">
                             <div class="reel-container"><div class="reel-strip" id="slot-reel-0"><div class="slot-symbol">🍌</div></div></div>
@@ -815,8 +815,8 @@
                         </div>
                         
                         <div class="boost-btn-group" style="margin-top: 12px;">
-                            <button class="boost-btn" onclick="playSlotMachine('COIN')" style="background: rgba(255,255,255,0.06); border:1px solid var(--accent-gold); color: var(--accent-gold);">🪙 300</button>
-                            <button class="boost-btn" onclick="playSlotMachine('DIAMOND')" style="background: rgba(255,255,255,0.06); border:1px solid var(--neon-blue); color: var(--neon-blue);">💎 20</button>
+                            <button class="boost-btn" onclick="playSlotMachine('COIN')" style="background: rgba(255,255,255,0.06); border:1px solid var(--accent-gold); color: var(--accent-gold);">🪙 200</button>
+                            <button class="boost-btn" onclick="playSlotMachine('DIAMOND')" style="background: rgba(255,255,255,0.06); border:1px solid var(--neon-blue); color: var(--neon-blue);">💎 10</button>
                             <button class="boost-btn" onclick="playSlotMachine('AD')" style="background: linear-gradient(90deg, #ff8400, #e0241f);">🎬 Tonton</button>
                         </div>
                     </div>
@@ -1902,17 +1902,17 @@
             if (isSlotSpinning) return;
 
             if (method === 'COIN') {
-                if (gameState.coins < 300) { 
-                    CustomUI.alert("Koin tidak mencukupi untuk Spin Slot! (Butuh 300 Koin).", "Saldo Kurang", "🪙"); 
+                if (gameState.coins < 200) { 
+                    CustomUI.alert("Koin tidak mencukupi untuk Spin Slot! (Butuh 200 Koin).", "Saldo Kurang", "🪙"); 
                     return; 
                 }
-                gameState.coins -= 300;
+                gameState.coins -= 200;
             } else if (method === 'DIAMOND') {
-                if (gameState.diamonds < 20) { 
-                    CustomUI.alert("Diamond tidak mencukupi untuk Spin Slot! (Butuh 20 Diamond).", "Saldo Kurang", "💎"); 
+                if (gameState.diamonds < 10) { 
+                    CustomUI.alert("Diamond tidak mencukupi untuk Spin Slot! (Butuh 10 Diamond).", "Saldo Kurang", "💎"); 
                     return; 
                 }
-                gameState.diamonds -= 20;
+                gameState.diamonds -= 10;
             } else if (method === 'AD') {
                 playSimulatedPortraitAd(getRandomInt(15, 25), "Memuat Token Mesin Slot dari Sponsor...", "🎰 Sponsor Slot", () => {
                     executeSlotSpin();
