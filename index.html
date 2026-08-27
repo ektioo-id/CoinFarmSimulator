@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -171,10 +172,9 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* IMPLEMENTASI NO 1: Background Stay Permanen */
+            background-attachment: fixed;
         }
 
-        /* IMPLEMENTASI NO 1: Mask dikurangi dari 0.84 ke 0.68 agar gambar lebih terlihat jelas */
         #screen-tap.active { 
             display: flex; 
             background-image: linear-gradient(rgba(14, 10, 32, 0.68), rgba(14, 10, 32, 0.68)), url('https://picsum.photos/450/850?sig=19&retro,gaming,kpop,cyberpunk,pink,blue');
@@ -356,7 +356,6 @@
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
         }
 
-        /* IMPLEMENTASI NO 3: Efek Animasi Neon RGB Menyala Melingkar & Glossy */
         @keyframes rgbRimGlow {
             0% { box-shadow: 0 0 18px #ff0055, inset 0 0 30px rgba(0,0,0,0.6); border-color: #ff0055; }
             25% { box-shadow: 0 0 18px #00e5ff, inset 0 0 30px rgba(0,0,0,0.6); border-color: #00e5ff; }
@@ -379,7 +378,6 @@
             animation: rgbRimGlow 5s linear infinite;
         }
 
-        /* Lapisan Kilaunya Efek Metalik Glossy */
         .wheel::after {
             content: '';
             position: absolute;
@@ -415,6 +413,58 @@
         }
         .btn-premium:disabled { background: #333142; box-shadow: none; cursor: not-allowed; opacity: 0.4; }
         .spin-allowance { font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; }
+
+        /* --- NEO FRUIT SLOTS --- */
+        .slot-machine {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background: #0c091f;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid #333142;
+            box-shadow: inset 0 0 25px rgba(0,0,0,0.9), 0 5px 15px rgba(0,0,0,0.4);
+            margin: 10px 0;
+        }
+        .reel-container {
+            width: 55px;
+            height: 65px;
+            background: linear-gradient(180deg, #18113c 0%, #2a1f5c 50%, #18113c 100%);
+            border: 2px solid var(--panel-border);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.8), 0 0 10px rgba(0, 229, 255, 0.2);
+        }
+        .reel-container::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .reel-strip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            transition: transform 0s;
+            will-change: transform;
+        }
+        .slot-symbol {
+            height: 65px; /* Sama dengan height .reel-container */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.3rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            width: 100%;
+            flex-shrink: 0;
+        }
 
         /* --- BRANKAS ANIMASI EFEK TERBARU --- */
         .vault-box-container {
@@ -571,7 +621,6 @@
         .modal-box h3 { margin-bottom: 8px; font-size: 1.15rem; }
         .modal-box p { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px; }
 
-        /* UI POPUP UTK ALERTS / CONFIRM CUSTOM (PENGGANTI ALERT BAWAAN) */
         .custom-popup-overlay {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(4, 2, 12, 0.85); backdrop-filter: blur(8px);
@@ -752,6 +801,28 @@
 
                     <hr style="border:0; border-top:1px solid var(--panel-border); width:100%; margin:16px 0;">
 
+                    <!-- FITUR BARU: NEO FRUIT SLOTS -->
+                    <div class="card-panel" style="text-align: center; background: rgba(255, 170, 0, 0.03); border: 1px solid rgba(255, 170, 0, 0.2);">
+                        <h3 style="font-size: 1rem; font-weight:600; color: var(--accent-gold);">🎰 Neo Fruit Slots</h3>
+                        <!-- Deskripsi diperbarui agar sesuai logika acak terbaru -->
+                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 8px;">3 Buah = Dapatkan Reward Koin! 4 Buah = Dapatkan Reward Diamond!</p>
+                        
+                        <div class="slot-machine">
+                            <div class="reel-container"><div class="reel-strip" id="slot-reel-0"><div class="slot-symbol">🍌</div></div></div>
+                            <div class="reel-container"><div class="reel-strip" id="slot-reel-1"><div class="slot-symbol">🍒</div></div></div>
+                            <div class="reel-container"><div class="reel-strip" id="slot-reel-2"><div class="slot-symbol">🍉</div></div></div>
+                            <div class="reel-container"><div class="reel-strip" id="slot-reel-3"><div class="slot-symbol">🍇</div></div></div>
+                        </div>
+                        
+                        <div class="boost-btn-group" style="margin-top: 12px;">
+                            <button class="boost-btn" onclick="playSlotMachine('COIN')" style="background: rgba(255,255,255,0.06); border:1px solid var(--accent-gold); color: var(--accent-gold);">🪙 300</button>
+                            <button class="boost-btn" onclick="playSlotMachine('DIAMOND')" style="background: rgba(255,255,255,0.06); border:1px solid var(--neon-blue); color: var(--neon-blue);">💎 20</button>
+                            <button class="boost-btn" onclick="playSlotMachine('AD')" style="background: linear-gradient(90deg, #ff8400, #e0241f);">🎬 Tonton</button>
+                        </div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid var(--panel-border); width:100%; margin:16px 0;">
+
                     <div class="card-panel" style="text-align: center; background: rgba(0,229,255,0.01);">
                         <div class="vault-box-container" id="vault-click-node">
                             <div id="chest-animation-node">📦</div>
@@ -907,7 +978,7 @@
                         <div class="avatar-option-card" data-av="👑">👑</div>
                         <div class="avatar-option-card" data-av="👾">👾</div>
                     </div>
-                    <button class="btn-small" id="btn-generate-avatar" style="width:100%; border-color:var(--neon-blue); color:var(--neon-blue); background:rgba(0,229,255,0.05);">🎲 Generate Karakter AI Random</button>
+                    <button class="btn-small" id="btn-generate-avatar" style="width:100%; border-color:var(--neon-blue); color:var(--neon-blue); background:rgba(0,229,255,0.05);">Generate Karakter Random</button>
                 </div>
 
                 <input type="text" class="input-premium" id="reg-name" placeholder="Nama Lengkap Miner" style="margin-bottom:10px;">
@@ -915,12 +986,12 @@
                 <input type="text" class="input-premium" id="reg-phone" placeholder="No HP DANA / ShopeePay" style="margin-bottom:10px;">
                 
                 <select class="input-premium" id="reg-wallet-type" style="margin-bottom:14px; color:#fff; background:#181430;">
-                    <option value="DANA">DANA Premium</option>
-                    <option value="ShopeePay">ShopeePay Plus</option>
-                    <option value="OVO">OVO Premier</option>
-                    <option value="Gopay">Gopay Plus</option>
+                    <option value="DANA">DANA</option>
+                    <option value="ShopeePay">ShopeePay</option>
+                    <option value="OVO">OVO</option>
+                    <option value="Gopay">Gopay</option>
                 </select>
-                <button class="btn-premium" id="btn-submit-register" style="width:100%;">SIMPAN & MASUK CYBER</button>
+                <button class="btn-premium" id="btn-submit-register" style="width:100%;">SIMPAN & MASUK</button>
                 <button class="btn-small" id="btn-close-profile-modal" style="width:100%; margin-top:8px; display:none; background:rgba(255,31,83,0.1); border-color:var(--neon-red); color:var(--neon-red);">BATAL</button>
             </div>
         </div>
@@ -1002,7 +1073,6 @@
     </div>
 
     <script>
-        // ENGINE POPUP UI KUSTOM UNTUK MENGGANTIKAN ALERT DAN CONFIRM BAWAAN BROWSER
         const CustomUI = {
             alert(message, title = "Sistem Notifikasi", icon = "📢", callback = null) {
                 document.getElementById('popup-alert-title').innerText = title;
@@ -1072,7 +1142,6 @@
                 } catch(e){}
             },
 
-            /* IMPLEMENTASI NO 6: Efek Suara Saat Roulette Spin Berputar */
             playSpinSound() {
                 if (this.isMuted || !this.ctx) return;
                 try {
@@ -1091,7 +1160,6 @@
                 } catch(e){}
             },
 
-            /* IMPLEMENTASI NO 6: Efek Suara Khusus Saat Buka Peti Harta Sponsor */
             playChestSound() {
                 if (this.isMuted || !this.ctx) return;
                 try {
@@ -1195,9 +1263,9 @@
             lastDailyResetDate: "",
             lastAdTime: Date.now(),
             noAdsUntil: 0,
-            weeklyCoinsRedeemed: 0, // REVISI NO 2: Akumulasi penarikan koin mingguan
-            weeklyCoinWithdrawCount: 0, // REVISI NO 2: Counter frekuensi penarikan koin mingguan (Maks 2x)
-            coinWithdrawDays: [], // REVISI NO 2: Jadwal hari acak pencairan koin per individu player
+            weeklyCoinsRedeemed: 0,
+            weeklyCoinWithdrawCount: 0,
+            coinWithdrawDays: [],
             weeklyDiamondsRedeemed: 0, 
             diamondWithdrawDay: "", 
             pendingWithdrawals: [],
@@ -1208,14 +1276,13 @@
 
         const REVENUE_RATE = 25; 
         const DIAMOND_RATE = 5; 
-        const MAX_WEEKLY_COIN_REDEEM = 500000; // REVISI NO 2: Limit penarikan koin seminggu max 500k koin
-        const MIN_REDEEM = 250000; // REVISI NO 2: Minimal cair 250.000 koin
-        const MAX_REDEEM = 25000000; // REVISI NO 2: Maksimal cair 25.000.000 koin
+        const MAX_WEEKLY_COIN_REDEEM = 500000;
+        const MIN_REDEEM = 250000;
+        const MAX_REDEEM = 25000000;
         
         const MIN_DIAMOND_REDEEM = 1000; 
         const MAX_WEEKLY_DIAMOND = 1000; 
 
-        /* IMPLEMENTASI NO 5: Sponsor pop-up ads diubah menjadi 8 s/d 12 menit sekali acak (dalam milidetik) */
         let nextAdCooldown = getRandomInt(480000, 720000); 
         let currentWheelRotation = 0;
         let autoTapInterval = null;
@@ -1253,6 +1320,10 @@
         const globalBotNames = ["Rian_Gamer", "Siti.M", "Budi_Cyber", "Ahmad99", "Putri_R", "Eko_Miner", "Dewi.S", "Roni_Tap", "Mega_Crypto", "Hendra90", "Sari_Neo", "Andi_Pro", "Bayu_Clicker", "Fitri_Gacha"];
         const globalBotWallets = ["DANA", "ShopeePay", "OVO", "Gopay"];
         let simulatedGlobalHistory = []; 
+
+        /* --- Variabel Neo Fruit Slots --- */
+        const slotFruitSymbols = ['🍒', '🍋', '🍉', '🍇', '🍌', '🔔'];
+        let isSlotSpinning = false;
 
         window.addEventListener('DOMContentLoaded', () => {
             loadGameState();
@@ -1380,7 +1451,6 @@
                 if (gameState.coinsEarnedToday === undefined) gameState.coinsEarnedToday = 0;
                 if (!gameState.missionsClaimed) gameState.missionsClaimed = [false, false, false];
                 
-                /* REVISI NO 2: Inisialisasi Jadwal Acak 2 Hari Kerja untuk Coin Seminggu */
                 if (!gameState.coinWithdrawDays || gameState.coinWithdrawDays.length === 0) {
                     const daysPool = ["Selasa", "Rabu", "Jumat", "Sabtu"];
                     let shuffle = [...daysPool].sort(() => 0.5 - Math.random());
@@ -1411,8 +1481,8 @@
                     if (new Date().getDay() === 1) { 
                         gameState.lastClaimedDayIndex = -1;
                         gameState.weeklyDiamondsRedeemed = 0;
-                        gameState.weeklyCoinsRedeemed = 0; // Reset koin mingguan tiap Senin
-                        gameState.weeklyCoinWithdrawCount = 0; // Reset frekuensi cair koin tiap Senin
+                        gameState.weeklyCoinsRedeemed = 0; 
+                        gameState.weeklyCoinWithdrawCount = 0; 
                     }
                     saveGameState();
                 }
@@ -1434,7 +1504,6 @@
             }
         }
 
-        /* REVISI NO 4: Handler Manajemen Pembelian dan Pengisian Sel Daya Baterai Beragam Opsi */
         function handleBatteryPurchase(capacity, type) {
             AudioEngine.init();
             if (type === 'COIN') {
@@ -1629,7 +1698,6 @@
             document.getElementById('ad-spin-quota-text').innerText = `(${gameState.extraSpinsAdClaimed}/5)`; 
             document.getElementById('chest-count-text').innerText = `Kuota Hari Ini: ${gameState.chestsLeft} / 6`; 
             
-            /* REVISI NO 2: Update Informasi Visual Jadwal Penarikan Koin & Limit Frekuensi Kerja */
             if(document.getElementById('coin-schedule-days')) {
                 document.getElementById('coin-schedule-days').innerText = (gameState.coinWithdrawDays || []).join(" & ");
             }
@@ -1730,7 +1798,6 @@
                         
                         playSimulatedPortraitAd(getRandomInt(10, 15), "Audit Integritas Bot Ketukan...", "⚡ Drone Guard Check", () => {
                             gameState.lastAdTime = Date.now();
-                            /* IMPLEMENTASI NO 5: Re-roll jeda ad random 8 s/d 12 menit */
                             nextAdCooldown = getRandomInt(480000, 720000);
                         });
                     }
@@ -1799,7 +1866,7 @@
                             <div style="color:var(--neon-blue); font-size:0.58rem; margin-top:2px;">${item.timeAgo} ago</div>
                         </div>
                     `;
-                    targetContainer.appendChild(node); structuralList
+                    targetContainer.appendChild(node);
                 });
             }
         }
@@ -1830,6 +1897,150 @@
             }
         }
 
+        /* --- FUNGSI MESIN SLOT BUAH BARU (DENGAN REWARD RANDOM BERBOBOT) --- */
+        function playSlotMachine(method) {
+            if (isSlotSpinning) return;
+
+            if (method === 'COIN') {
+                if (gameState.coins < 300) { 
+                    CustomUI.alert("Koin tidak mencukupi untuk Spin Slot! (Butuh 300 Koin).", "Saldo Kurang", "🪙"); 
+                    return; 
+                }
+                gameState.coins -= 300;
+            } else if (method === 'DIAMOND') {
+                if (gameState.diamonds < 20) { 
+                    CustomUI.alert("Diamond tidak mencukupi untuk Spin Slot! (Butuh 20 Diamond).", "Saldo Kurang", "💎"); 
+                    return; 
+                }
+                gameState.diamonds -= 20;
+            } else if (method === 'AD') {
+                playSimulatedPortraitAd(getRandomInt(15, 25), "Memuat Token Mesin Slot dari Sponsor...", "🎰 Sponsor Slot", () => {
+                    executeSlotSpin();
+                });
+                return; 
+            }
+
+            updateVisualUI();
+            saveGameState();
+            executeSlotSpin();
+        }
+
+        function executeSlotSpin() {
+            isSlotSpinning = true;
+            AudioEngine.init();
+            
+            let results = [];
+            for(let i=0; i<4; i++) {
+                results.push(slotFruitSymbols[Math.floor(Math.random() * slotFruitSymbols.length)]);
+            }
+
+            // Optional Chance Buffers for better engagement
+            let chance = Math.random();
+            if (chance < 0.05) { 
+                let winSymbol = slotFruitSymbols[Math.floor(Math.random() * slotFruitSymbols.length)];
+                results = [winSymbol, winSymbol, winSymbol, winSymbol]; // 4 Match
+            } else if (chance < 0.15) {
+                let winSymbol = slotFruitSymbols[Math.floor(Math.random() * slotFruitSymbols.length)];
+                let otherSymbol = slotFruitSymbols.filter(s => s !== winSymbol)[0];
+                results = [winSymbol, winSymbol, winSymbol, otherSymbol].sort(() => 0.5 - Math.random()); // 3 Match
+            }
+
+            let spinSoundTick = setInterval(() => { AudioEngine.playSpinSound(); }, 150);
+            const strips = [];
+
+            for (let i = 0; i < 4; i++) {
+                const strip = document.getElementById(`slot-reel-${i}`);
+                strips.push(strip);
+                
+                let stripHTML = '';
+                const numSpins = 20 + (i * 5); 
+                for (let j = 0; j < numSpins; j++) {
+                    stripHTML += `<div class="slot-symbol">${slotFruitSymbols[Math.floor(Math.random() * slotFruitSymbols.length)]}</div>`;
+                }
+                stripHTML += `<div class="slot-symbol">${results[i]}</div>`;
+                
+                strip.innerHTML = stripHTML;
+                strip.style.transition = 'none';
+                strip.style.transform = 'translateY(0)';
+            }
+
+            // Force reflow
+            void document.body.offsetHeight;
+
+            for (let i = 0; i < 4; i++) {
+                const strip = strips[i];
+                const numSpins = 20 + (i * 5);
+                const itemHeight = 65; 
+                const targetY = -(numSpins * itemHeight);
+                
+                const duration = 2 + (i * 0.5); 
+                strip.style.transition = `transform ${duration}s cubic-bezier(0.1, 0.7, 0.1, 1)`;
+                strip.style.transform = `translateY(${targetY}px)`;
+            }
+
+            setTimeout(() => {
+                clearInterval(spinSoundTick);
+                isSlotSpinning = false;
+                evaluateSlotResult(results);
+            }, 3600);
+        }
+
+        function evaluateSlotResult(results) {
+            let counts = {};
+            let maxCount = 0;
+            let winningSymbol = '';
+            
+            results.forEach(s => {
+                counts[s] = (counts[s] || 0) + 1;
+                if (counts[s] > maxCount) {
+                    maxCount = counts[s];
+                    winningSymbol = s;
+                }
+            });
+
+            if (maxCount === 4) {
+                // Logika Random Weighted (Diamond: 25 - 200)
+                let chance = Math.random();
+                let reward = 0;
+                
+                if (chance < 0.60) {
+                    reward = getRandomInt(25, 50); // 60% peluang (Sangat Umum)
+                } else if (chance < 0.85) {
+                    reward = getRandomInt(51, 100); // 25% peluang (Umum)
+                } else if (chance < 0.95) {
+                    reward = getRandomInt(101, 150); // 10% peluang (Jarang)
+                } else {
+                    reward = getRandomInt(151, 200); // 5% peluang (Sangat Jarang)
+                }
+
+                gameState.diamonds += reward;
+                AudioEngine.playChestSound(); 
+                CustomUI.alert(`JACKPOT DIAMOND! 4 Buah ${winningSymbol} sejajar!\nAnda memenangkan tambahan ${reward} Diamond!`, "SUPER JACKPOT", "💎");
+                
+            } else if (maxCount === 3) {
+                // Logika Random Weighted (Koin: 500 - 10000)
+                let chance = Math.random();
+                let reward = 0;
+                
+                if (chance < 0.60) {
+                    reward = getRandomInt(500, 1000); // 60% peluang (Sangat Umum)
+                } else if (chance < 0.85) {
+                    reward = getRandomInt(1001, 3000); // 25% peluang (Umum)
+                } else if (chance < 0.95) {
+                    reward = getRandomInt(3001, 6000); // 10% peluang (Jarang)
+                } else {
+                    reward = getRandomInt(6001, 10000); // 5% peluang (Sangat Jarang)
+                }
+
+                gameState.coins += reward;
+                AudioEngine.playClaimSound();
+                CustomUI.alert(`JACKPOT KOIN! 3 Buah ${winningSymbol} muncul!\nAnda memenangkan tambahan ${reward.toLocaleString('id-ID')} Koin!`, "Coin Jackpot", "🪙");
+            }
+
+            updateVisualUI();
+            saveGameState();
+        }
+
         function initEventHandlers() {
             document.getElementById('audio-master-switch').addEventListener('click', (e) => {
                 e.stopPropagation(); 
@@ -1839,7 +2050,7 @@
 
             document.getElementById('header-profile-trigger').addEventListener('click', () => {
                 document.getElementById('profile-modal-title').innerText = "Konfigurasi Identitas Miner";
-                document.getElementById('profile-modal-desc').innerText = "Perbarui avatar unik portrait generator AI Anda serta data verifikasi e-wallet tujuan likuidasi.";
+                document.getElementById('profile-modal-desc').innerText = "Perbarui avatar unik portrait generator AI Anda serta data verifikasi e-wallet target penarikan.";
                 
                 document.getElementById('reg-name').value = gameState.user.name || "";
                 document.getElementById('reg-email').value = gameState.user.email || "";
@@ -1984,7 +2195,6 @@
                     }
                     playSimulatedPortraitAd(getRandomInt(10, 15), "Verifikasi Blok Enkripsi Koin...", "⚡ Keamanan Ketukan", () => {
                         gameState.lastAdTime = Date.now();
-                        /* IMPLEMENTASI NO 5: Re-roll jeda ad random 8 s/d 12 menit */
                         nextAdCooldown = getRandomInt(480000, 720000);
                     });
                 }
@@ -2034,7 +2244,6 @@
                 updateVisualUI();
                 saveGameState();
 
-                /* IMPLEMENTASI NO 6: Memutar efek audio spin sintetis */
                 let soundTick = setInterval(() => {
                     AudioEngine.playSpinSound();
                 }, 250);
@@ -2096,7 +2305,6 @@
                 cNode.classList.add('chest-opening');
 
                 playSimulatedPortraitAd(getRandomInt(30, 45), "Mendekripsi Kode Akses Brankas...", "🏴‍☠️ Vault Code Decryptor", () => {
-                    /* IMPLEMENTASI NO 6: Bunyi FX suara brankas terbuka */
                     AudioEngine.playChestSound();
                     cNode.innerText = "🔓";
                     const loot = getRandomInt(25, 2000);
@@ -2136,7 +2344,6 @@
                 document.getElementById('exchange-diamond-estimation').innerText = `Rp ${(inputVal * DIAMOND_RATE).toLocaleString('id-ID')}`;
             });
 
-            /* REVISI NO 2: Aturan Logika Validasi Pencairan Coin Seminggu 2x */
             document.getElementById('btn-redeem').addEventListener('click', () => {
                 const amt = parseInt(document.getElementById('exchange-amount').value) || 0;
 
