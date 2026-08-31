@@ -154,26 +154,27 @@
 
         .main-content {
             flex: 1;
-            overflow-y: auto;
+            overflow: hidden; 
             display: flex;
             flex-direction: column;
             position: relative;
         }
-
-        .main-content::-webkit-scrollbar { width: 0px; }
 
         .screen {
             display: none;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            min-height: 100%;
+            height: 100%; 
+            overflow-y: auto; 
             padding: 16px;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-attachment: scroll; 
         }
+        
+        .screen::-webkit-scrollbar { width: 0px; }
 
         #screen-tap.active { 
             display: flex; 
@@ -307,7 +308,7 @@
             padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 12px;
         }
         .boost-header {
             display: flex;
@@ -318,6 +319,7 @@
             display: flex;
             gap: 8px;
             width: 100%;
+            margin-top: 6px;
         }
         .boost-btn {
             flex: 1;
@@ -344,7 +346,7 @@
         input:checked + .slider { background-color: var(--accent-gold); }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        /* --- SCREEN 2: SPIN WHEEL (METALLIC EFFECT) --- */
+        /* --- SCREEN 2: SPIN WHEEL --- */
         .spin-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .wheel-outer { position: relative; width: 260px; height: 260px; margin: 15px 0; }
         
@@ -456,7 +458,7 @@
             will-change: transform;
         }
         .slot-symbol {
-            height: 65px; /* Sama dengan height .reel-container */
+            height: 65px; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -545,6 +547,76 @@
             border-radius: 10px; padding: 10px; color: white; font-size: 0.9rem;
             outline: none; width: 100%;
         }
+
+        /* --- MARATHON AD GRID UI --- */
+        .marathon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .marathon-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 10px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 55px;
+        }
+        .marathon-box .m-title { font-size: 0.65rem; font-weight: 600; color: var(--text-muted); }
+        .marathon-box .m-icon { font-size: 1.1rem; margin-top: 2px; }
+        
+        .marathon-box.done { 
+            background: rgba(0, 255, 102, 0.08); 
+            border-color: rgba(0, 255, 102, 0.4); 
+            opacity: 0.6; 
+            cursor: default; 
+        }
+        .marathon-box.active { 
+            background: rgba(189, 0, 255, 0.15); 
+            border-color: var(--neon-purple); 
+            box-shadow: 0 0 10px rgba(189,0,255,0.3); 
+            animation: pulseText 1.5s infinite; 
+        }
+        .marathon-box.active .m-title { color: #fff; }
+        .marathon-box.locked { 
+            opacity: 0.4; 
+            cursor: not-allowed; 
+        }
+
+        /* --- TIC TAC TOE UI --- */
+        .tictactoe-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            width: 220px;
+            margin: 15px auto;
+        }
+        .ttt-cell {
+            width: 100%;
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--panel-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .ttt-cell:hover { background: rgba(255,255,255,0.1); }
+        .ttt-cell.x { color: var(--neon-green); text-shadow: 0 0 10px rgba(0,255,102,0.4); }
+        .ttt-cell.o { color: var(--neon-red); text-shadow: 0 0 10px rgba(255,31,83,0.4); }
+
 
         .history-tabs-header {
             display: flex;
@@ -766,15 +838,31 @@
                     </div>
 
                     <div class="boost-box">
-                        <div class="boost-header">
-                            <div>
-                                <h4 style="font-size: 0.78rem; font-weight: 600; color: var(--neon-purple);">🚀 Super Turbo Boost (x8 Speed)</h4>
-                                <p style="font-size: 0.65rem; color: var(--text-muted);">Ketukan robot menjadi 8x lipat lebih cepat selama 10 menit.</p>
+                        <!-- TURBO x8 -->
+                        <div>
+                            <div class="boost-header">
+                                <div>
+                                    <h4 style="font-size: 0.78rem; font-weight: 600; color: var(--neon-purple);">🚀 Super Turbo Boost (x8 Speed)</h4>
+                                    <p style="font-size: 0.65rem; color: var(--text-muted);" id="turbo-desc">Ketukan robot menjadi 8x lipat lebih cepat selama 10 menit.</p>
+                                </div>
+                            </div>
+                            <div class="boost-btn-group" id="turbo-actions-container">
+                                <button class="boost-btn" id="btn-boost-ad" style="background: linear-gradient(90deg,#9d00ff,#bd00ff);">🎬 Aktifkan (Ads)</button>
+                                <button class="boost-btn" id="btn-boost-coin" style="background: rgba(255,255,255,0.06); border:1px solid rgba(189,0,255,0.4); color: var(--neon-purple);">🪙 Bayar 500 Coin</button>
                             </div>
                         </div>
-                        <div class="boost-btn-group" id="boost-actions-container">
-                            <button class="boost-btn" id="btn-boost-ad" style="background: linear-gradient(90deg,#9d00ff,#bd00ff);">🎬 Aktifkan (Ads)</button>
-                            <button class="boost-btn" id="btn-boost-coin" style="background: rgba(255,255,255,0.06); border:1px solid rgba(189,0,255,0.4); color: var(--neon-purple);">🪙 Bayar 300 Coin</button>
+                        
+                        <!-- MEGA x13 -->
+                        <div style="border-top: 1px dashed rgba(189, 0, 255, 0.3); padding-top: 10px;">
+                            <div class="boost-header">
+                                <div>
+                                    <h4 style="font-size: 0.78rem; font-weight: 600; color: var(--neon-red);">🔥 Super Mega Boost (x13 Speed)</h4>
+                                    <p style="font-size: 0.65rem; color: var(--text-muted);" id="mega-desc">Robot 13x lipat lebih cepat (8 Menit). Kuota: <span id="mega-quota-text" style="color:var(--neon-red)">0/2</span></p>
+                                </div>
+                            </div>
+                            <div class="boost-btn-group" id="mega-actions-container">
+                                <button class="boost-btn" id="btn-boost-mega" style="background: linear-gradient(90deg, #ff1f53, #ff8400);">💎 200 + 🪙 1.000</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -801,11 +889,10 @@
 
                     <hr style="border:0; border-top:1px solid var(--panel-border); width:100%; margin:16px 0;">
 
-                    <!-- FITUR BARU: NEO FRUIT SLOTS -->
+                    <!-- FITUR: NEO FRUIT SLOTS DENGAN SUPER LUCK -->
                     <div class="card-panel" style="text-align: center; background: rgba(255, 170, 0, 0.03); border: 1px solid rgba(255, 170, 0, 0.2);">
                         <h3 style="font-size: 1rem; font-weight:600; color: var(--accent-gold);">🎰 Neo Fruit Slots</h3>
-                        <!-- Deskripsi diperbarui agar sesuai logika acak terbaru -->
-                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 8px;">3 Buah = Mendapat Reward Koin! 4 Buah = Mendapat Reward Diamond!</p>
+                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 8px;">3 Buah dapatkan koin acak. 4 Buah dapatkan diamond acak</p>
                         
                         <div class="slot-machine">
                             <div class="reel-container"><div class="reel-strip" id="slot-reel-0"><div class="slot-symbol">🍌</div></div></div>
@@ -819,6 +906,20 @@
                             <button class="boost-btn" onclick="playSlotMachine('DIAMOND')" style="background: rgba(255,255,255,0.06); border:1px solid var(--neon-blue); color: var(--neon-blue);">💎 30</button>
                             <button class="boost-btn" onclick="playSlotMachine('AD')" style="background: linear-gradient(90deg, #ff8400, #e0241f);">🎬 Tonton</button>
                         </div>
+
+                        <!-- PANEL SUPER LUCK -->
+                        <div style="margin-top: 15px; padding: 10px; background: rgba(189, 0, 255, 0.05); border: 1px dashed rgba(189, 0, 255, 0.3); border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <div style="text-align: left;">
+                                    <h4 style="font-size: 0.78rem; font-weight: 600; color: var(--neon-purple);">🍀 Super Luck Mode (+15%)</h4>
+                                    <p style="font-size: 0.65rem; color: var(--text-muted);" id="super-luck-status">Aktif untuk 0 spin. (Batas: 0/2 Hari Ini)</p>
+                                </div>
+                            </div>
+                            <div class="boost-btn-group">
+                                <button class="boost-btn" onclick="buySuperLuck('DIAMOND')" style="background: rgba(255,255,255,0.06); border:1px solid var(--neon-purple); color: var(--neon-purple);">💎 100 Diamond</button>
+                                <button class="boost-btn" onclick="buySuperLuck('AD')" style="background: linear-gradient(90deg, #9d00ff, #bd00ff);">🎬 2x Ads</button>
+                            </div>
+                        </div>
                     </div>
 
                     <hr style="border:0; border-top:1px solid var(--panel-border); width:100%; margin:16px 0;">
@@ -828,11 +929,11 @@
                             <div id="chest-animation-node">📦</div>
                         </div>
                         <h4 style="font-size: 0.85rem; font-weight:600;">Brankas Misteri Harta Sponsor</h4>
-                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 8px;">Klaim kejutan instan hingga max 2.000 Koin gratis.</p>
+                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 8px;">Kalahkan AI Penjaga (Bot) dalam Tic-Tac-Toe untuk membobol brankas dan raih Koin gratis.</p>
                         <button class="btn-premium" id="btn-open-chest" style="background: linear-gradient(90deg, #11998e, #38ef7d); box-shadow: 0 4px 12px rgba(56,239,125,0.2); padding: 8px 20px; font-size: 0.8rem;">
-                            Buka Brankas (Ads)
+                            Buka Game (Ads)
                         </button>
-                        <div class="spin-allowance" id="chest-count-text">Kuota Hari Ini: 6 / 6</div>
+                        <div class="spin-allowance" id="chest-count-text">Sisa Percobaan: 3 / 3</div>
                     </div>
                 </div>
             </div>
@@ -849,6 +950,15 @@
                     <h4 style="font-size: 0.8rem; font-weight: 600; color: var(--neon-blue);">🎯 Misi Target Mining Harian</h4>
                     <p style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px;">Akumulasi Hasil Tap Hari Ini: <strong id="mission-today-coins" style="color: var(--neon-green)">0</strong> Koin</p>
                     <div class="calendar-grid" id="daily-missions-dom" style="grid-template-columns: repeat(3, 1fr);"></div>
+                </div>
+
+                <!-- MISI MARATON IKLAN HARIAN (GRID UI) -->
+                <div class="card-panel" style="background: rgba(189, 0, 255, 0.03); border: 1px solid rgba(189, 0, 255, 0.15);">
+                    <h4 style="font-size: 0.8rem; font-weight: 600; color: var(--neon-purple);">📺 Misi Maraton Iklan Harian</h4>
+                    <p style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px;">Selesaikan urutan iklan harian. Kotak ke-8 memberi bonus +50 Diamond!</p>
+                    <div class="marathon-grid" id="marathon-grid-dom">
+                        <!-- Digenerate via JS -->
+                    </div>
                 </div>
 
                 <span class="section-title" id="pending-title" style="display:none; color: var(--accent-gold);">Proses Audit Keamanan Finansial</span>
@@ -889,10 +999,19 @@
                     <div class="shop-item">
                         <div class="shop-item_info-text">
                             <h4>Kapasitas Baterai 3000</h4>
-                            <p>Kapasitas tertinggi kasta Overlord</p>
+                            <p>Kapasitas level Master Miner</p>
                         </div>
                         <button class="btn-small" onclick="handleBatteryPurchase(3000, 'COIN')">🪙 1200</button>
                     </div>
+                    <!-- BATTERY 5000 BARU -->
+                    <div class="shop-item">
+                        <div class="shop-item_info-text">
+                            <h4>Kapasitas Baterai 5000</h4>
+                            <p>Reaktor fusi inti tanpa batas</p>
+                        </div>
+                        <button class="btn-small" onclick="handleBatteryPurchase(5000, 'DUAL')" style="border-color:var(--neon-blue); color:var(--neon-blue); background:rgba(0,229,255,0.05);">🪙 2.500 + 💎 100</button>
+                    </div>
+
                     <div class="shop-item" style="border-top:1px dashed rgba(255,255,255,0.05); padding-top:10px; margin-top:4px;">
                         <div class="shop-item_info-text">
                             <h4 style="color: var(--neon-blue);">Sertifikat Anti Iklan Kejutan</h4>
@@ -965,6 +1084,7 @@
             </div>
         </nav>
 
+        <!-- Modals and Overlays -->
         <div id="modal-register" class="modal-overlay" style="display: flex;">
             <div class="modal-box">
                 <h3 id="profile-modal-title">Aktivasi Akun Miner AI</h3>
@@ -1005,6 +1125,20 @@
                     + 0 COINS
                 </div>
                 <button class="btn-premium" id="btn-close-chest-modal" style="background:var(--neon-blue); color:#000; width:100%;">SIMPAN KE DOMPET</button>
+            </div>
+        </div>
+
+        <!-- MODAL TIC TAC TOE -->
+        <div id="modal-tictactoe" class="modal-overlay">
+            <div class="modal-box" style="border-color: var(--neon-blue); max-width: 320px;">
+                <h3 style="color: var(--neon-blue); margin-bottom: 5px;">Hacker (X) vs Brankas AI (O)</h3>
+                <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 15px;">Kalahkan AI Penjaga dalam formasi sejajar untuk membobol brankas!</p>
+                
+                <div class="tictactoe-board" id="ttt-board">
+                    <!-- JS akan mengisi 9 cell disini -->
+                </div>
+                
+                <div id="ttt-status" style="margin-top: 15px; font-weight: 600; color: var(--neon-green); height: 20px;">Giliran Anda (X)</div>
             </div>
         </div>
 
@@ -1256,9 +1390,11 @@
             energy: 1000,          
             maxEnergy: 1000,       
             spinsLeft: 3,
-            chestsLeft: 6, 
+            chestsLeft: 3, 
             extraSpinsAdClaimed: 0,
             boostActiveUntil: 0,    
+            megaBoostActiveUntil: 0, 
+            megaBoostBoughtToday: 0,
             lastClaimedDayIndex: -1, 
             lastDailyResetDate: "",
             lastAdTime: Date.now(),
@@ -1271,7 +1407,10 @@
             pendingWithdrawals: [],
             myHistory: [],
             coinsEarnedToday: 0,              
-            missionsClaimed: [false, false, false] 
+            missionsClaimed: [false, false, false],
+            superLuckSpinsLeft: 0,
+            superLuckBoughtToday: 0,
+            marathonAdsWatchedToday: 0 
         };
 
         const REVENUE_RATE = 25; 
@@ -1286,8 +1425,14 @@
         let nextAdCooldown = getRandomInt(480000, 720000); 
         let currentWheelRotation = 0;
         let autoTapInterval = null;
+        let activeTapSpeed = 0; 
         let lastManualTapTimestamp = 0;
         let currentHistoryTab = 'my';
+
+        // TTT State
+        let tttBoard = ['', '', '', '', '', '', '', '', ''];
+        let tttIsPlayerTurn = true;
+        let tttGameOver = false;
 
         const wheelSectors = [
             { label: "15,000 JP", val: 15000, weight: 0.003 },
@@ -1332,6 +1477,7 @@
             renderWeeklyCalendarUI();
             renderDailyMissionsUI();
             generateInitialGlobalHistory();
+            initTicTacToeBoard();
 
             setInterval(() => {
                 if (gameState.energy < gameState.maxEnergy) {
@@ -1360,17 +1506,31 @@
                     statusLabel.style.display = 'none';
                 }
 
-                const boostDesc = document.querySelector('.boost-box p');
-                const boostContainer = document.getElementById('boost-actions-container');
+                // Turbo Boost Tick
+                const turboDesc = document.getElementById('turbo-desc');
+                const turboContainer = document.getElementById('turbo-actions-container');
                 if (gameState.boostActiveUntil > now) {
                     const diff = gameState.boostActiveUntil - now;
-                    boostDesc.innerHTML = `<strong style="color:var(--neon-green)">BOOST X8 AKTIF:</strong> ${Math.floor(diff/60000)}m ${Math.floor((diff%60000)/1000)}s sisa`;
-                    boostContainer.style.display = 'none';
-                    relinkActiveAutoTapSpeed();
+                    turboDesc.innerHTML = `<strong style="color:var(--neon-green)">TURBO x8 AKTIF:</strong> ${Math.floor(diff/60000)}m ${Math.floor((diff%60000)/1000)}s sisa`;
+                    turboContainer.style.display = 'none';
                 } else {
-                    boostDesc.innerText = "Ketukan robot menjadi 8x lipat lebih cepat selama 10 menit.";
-                    boostContainer.style.display = 'flex';
+                    turboDesc.innerText = "Ketukan robot menjadi 8x lipat lebih cepat selama 10 menit.";
+                    turboContainer.style.display = 'flex';
                 }
+
+                // Mega Boost Tick
+                const megaDesc = document.getElementById('mega-desc');
+                const megaContainer = document.getElementById('mega-actions-container');
+                if (gameState.megaBoostActiveUntil > now) {
+                    const diff = gameState.megaBoostActiveUntil - now;
+                    megaDesc.innerHTML = `<strong style="color:var(--neon-green)">MEGA x13 AKTIF:</strong> ${Math.floor(diff/60000)}m ${Math.floor((diff%60000)/1000)}s sisa`;
+                    megaContainer.style.display = 'none';
+                } else {
+                    megaDesc.innerHTML = `Robot 13x lipat lebih cepat (8 Menit). Kuota: <span style="color:var(--neon-red)">${gameState.megaBoostBoughtToday}/2</span>`;
+                    megaContainer.style.display = 'flex';
+                }
+
+                relinkActiveAutoTapSpeed();
 
                 if (gameState.pendingWithdrawals && gameState.pendingWithdrawals.length > 0) {
                     for (let i = gameState.pendingWithdrawals.length - 1; i >= 0; i--) {
@@ -1465,17 +1625,29 @@
                 }
                 if (!gameState.extraSpinsAdClaimed) gameState.extraSpinsAdClaimed = 0;
                 if (!gameState.boostActiveUntil) gameState.boostActiveUntil = 0;
+                
+                if (gameState.megaBoostActiveUntil === undefined) gameState.megaBoostActiveUntil = 0;
+                if (gameState.megaBoostBoughtToday === undefined) gameState.megaBoostBoughtToday = 0;
+                if (gameState.marathonAdsWatchedToday === undefined) gameState.marathonAdsWatchedToday = 0;
+                if (gameState.chestsLeft === undefined || gameState.chestsLeft > 3) gameState.chestsLeft = 3;
+
                 if (gameState.lastClaimedDayIndex === undefined) gameState.lastClaimedDayIndex = -1;
                 if (!gameState.pendingWithdrawals) gameState.pendingWithdrawals = [];
                 if (!gameState.myHistory) gameState.myHistory = [];
                 if (!gameState.user.avatar) gameState.user.avatar = "🦊";
+                
+                if (gameState.superLuckSpinsLeft === undefined) gameState.superLuckSpinsLeft = 0;
+                if (gameState.superLuckBoughtToday === undefined) gameState.superLuckBoughtToday = 0;
 
                 if (gameState.lastDailyResetDate !== todayStr) {
                     gameState.spinsLeft = 3;
-                    gameState.chestsLeft = 6; 
+                    gameState.chestsLeft = 3; 
                     gameState.extraSpinsAdClaimed = 0;
                     gameState.coinsEarnedToday = 0;               
                     gameState.missionsClaimed = [false, false, false]; 
+                    gameState.superLuckBoughtToday = 0; 
+                    gameState.megaBoostBoughtToday = 0;
+                    gameState.marathonAdsWatchedToday = 0;
                     gameState.lastDailyResetDate = todayStr;
                     
                     if (new Date().getDay() === 1) { 
@@ -1494,6 +1666,7 @@
                 document.getElementById('modal-register').style.display = 'flex';
                 gameState.lastDailyResetDate = todayStr;
                 gameState.lastAdTime = Date.now();
+                gameState.chestsLeft = 3;
                 
                 const daysPool = ["Selasa", "Rabu", "Jumat", "Sabtu"];
                 let shuffle = [...daysPool].sort(() => 0.5 - Math.random());
@@ -1522,7 +1695,21 @@
                 saveGameState();
                 updateVisualUI();
                 CustomUI.alert(`Modul daya baterai kapasitas ${capacity} berhasil dipasang dan diisi penuh!`, "Sukses!", "🔋");
-            } else if (type === 'AD') {
+            } 
+            else if (type === 'DUAL' && capacity === 5000) {
+                if (gameState.coins < 2500 || gameState.diamonds < 100) {
+                    CustomUI.alert("Saldo Koin atau Diamond Anda tidak mencukupi! (Butuh 2.500 Koin + 100 Diamond).", "Saldo Kurang", "⚠️");
+                    return;
+                }
+                gameState.coins -= 2500;
+                gameState.diamonds -= 100;
+                gameState.maxEnergy = capacity;
+                gameState.energy = capacity;
+                saveGameState();
+                updateVisualUI();
+                CustomUI.alert(`Reaktor fusi inti kapasitas 5000 berhasil dipasang! Energi terisi penuh.`, "Sukses Power-Up!", "🔋");
+            }
+            else if (type === 'AD') {
                 let requiredAds = 1;
                 if (capacity === 1500) requiredAds = 2;
                 if (capacity === 2500) requiredAds = 3;
@@ -1600,6 +1787,52 @@
                 }
                 missionsDom.appendChild(node);
             });
+        }
+
+        function renderMarathonUI() {
+            const gridDom = document.getElementById('marathon-grid-dom');
+            if(!gridDom) return;
+            gridDom.innerHTML = '';
+
+            for (let i = 0; i < 8; i++) {
+                const box = document.createElement('div');
+                
+                if (i < gameState.marathonAdsWatchedToday) {
+                    box.className = 'marathon-box done';
+                    box.innerHTML = `<span class="m-title">Misi ${i+1}</span><span class="m-icon">✔</span>`;
+                } else if (i === gameState.marathonAdsWatchedToday) {
+                    box.className = 'marathon-box active';
+                    let icon = (i === 7) ? '🎁' : '▶';
+                    box.innerHTML = `<span class="m-title">Misi ${i+1}</span><span class="m-icon">${icon}</span>`;
+                    
+                    box.onclick = () => {
+                        let nextIndex = i + 1;
+                        playSimulatedPortraitAd(getRandomInt(35, 45), `Menonton Iklan Maraton Misi (${nextIndex}/8)...`, "📺 Misi Maraton Harian", () => {
+                            gameState.marathonAdsWatchedToday += 1;
+                            
+                            let baseCoinReward = getRandomInt(100, 850);
+                            gameState.coins += baseCoinReward;
+                            
+                            if (gameState.marathonAdsWatchedToday === 8) {
+                                gameState.diamonds += 50;
+                                AudioEngine.playChestSound();
+                                CustomUI.alert(`Luar biasa! Maraton Iklan ke-8 selesai!\nAnda mendapat ${baseCoinReward} Koin + Bonus Spesial 50 Diamond!`, "Maraton Selesai!", "💎");
+                            } else {
+                                AudioEngine.playClaimSound();
+                                CustomUI.alert(`Iklan ke-${gameState.marathonAdsWatchedToday} sukses ditonton.\nAnda mendapatkan hadiah ${baseCoinReward} Koin.`, "Hadiah Maraton", "🪙");
+                            }
+                            
+                            saveGameState();
+                            updateVisualUI();
+                        });
+                    };
+                } else {
+                    box.className = 'marathon-box locked';
+                    let icon = (i === 7) ? '💎' : '🔒';
+                    box.innerHTML = `<span class="m-title">Misi ${i+1}</span><span class="m-icon" style="opacity:0.5">${icon}</span>`;
+                }
+                gridDom.appendChild(box);
+            }
         }
 
         function claimDailyMissionReward(idx) {
@@ -1696,7 +1929,17 @@
             
             document.getElementById('spin-count-text').innerText = `Sisa Putaran Roda: ${gameState.spinsLeft} / 3`;
             document.getElementById('ad-spin-quota-text').innerText = `(${gameState.extraSpinsAdClaimed}/5)`; 
-            document.getElementById('chest-count-text').innerText = `Kuota Hari Ini: ${gameState.chestsLeft} / 6`; 
+            document.getElementById('chest-count-text').innerText = `Sisa Percobaan: ${gameState.chestsLeft} / 3`; 
+            
+            // Status Super Luck Mode
+            if (document.getElementById('super-luck-status')) {
+                document.getElementById('super-luck-status').innerText = `Aktif untuk ${gameState.superLuckSpinsLeft} spin. (Batas: ${gameState.superLuckBoughtToday}/2 Hari Ini)`;
+                if (gameState.superLuckSpinsLeft > 0) {
+                    document.getElementById('super-luck-status').style.color = 'var(--neon-green)';
+                } else {
+                    document.getElementById('super-luck-status').style.color = 'var(--text-muted)';
+                }
+            }
             
             if(document.getElementById('coin-schedule-days')) {
                 document.getElementById('coin-schedule-days').innerText = (gameState.coinWithdrawDays || []).join(" & ");
@@ -1716,6 +1959,7 @@
             if (document.getElementById('screen-wallet').classList.contains('active')) {
                 renderWeeklyCalendarUI();
                 renderDailyMissionsUI(); 
+                renderMarathonUI();
                 renderHistoryListDOM();
             }
         }
@@ -1760,8 +2004,15 @@
 
         function relinkActiveAutoTapSpeed() {
             if (!autoTapInterval || !document.getElementById('autotap-toggle').checked) return;
-            let currentSpeed = (gameState.boostActiveUntil > Date.now()) ? 150 : 1200; 
-            if (autoTapInterval.speedTag !== currentSpeed) {
+            
+            let currentSpeed = 1200;
+            if (gameState.megaBoostActiveUntil > Date.now()) {
+                currentSpeed = 92; // ~1200 / 13
+            } else if (gameState.boostActiveUntil > Date.now()) {
+                currentSpeed = 150; // 1200 / 8
+            }
+
+            if (activeTapSpeed !== currentSpeed) {
                 clearInterval(autoTapInterval);
                 startAutoTapWorkerLoop(currentSpeed);
             }
@@ -1769,6 +2020,8 @@
 
         function startAutoTapWorkerLoop(speedMs) {
             const coinBtn = document.getElementById('coin-clicker');
+            activeTapSpeed = speedMs;
+            
             autoTapInterval = setInterval(() => {
                 if (gameState.energy > 0) {
                     gameState.coins += 1;
@@ -1807,7 +2060,6 @@
                     CustomUI.alert("Drone Auto-Tap dinonaktifkan otomatis karena baterai habis!", "Baterai Kritis", "🔋");
                 }
             }, speedMs);
-            autoTapInterval.speedTag = speedMs;
         }
 
         function getIndonesianDayName(dayIndex) {
@@ -1898,6 +2150,45 @@
         }
 
         /* --- FUNGSI MESIN SLOT BUAH BARU (DENGAN REWARD RANDOM BERBOBOT) --- */
+        
+        function buySuperLuck(method) {
+            AudioEngine.init();
+            if (gameState.superLuckBoughtToday >= 2) {
+                CustomUI.alert("Batas pembelian Super Luck harian Anda sudah habis (Maksimal 2x sehari).", "Batas Harian", "⚠️");
+                return;
+            }
+
+            if (method === 'DIAMOND') {
+                if (gameState.diamonds < 100) {
+                    CustomUI.alert("Diamond tidak mencukupi untuk mengaktifkan Super Luck! (Butuh 100 Diamond).", "Saldo Kurang", "💎");
+                    return;
+                }
+                gameState.diamonds -= 100;
+                activateSuperLuck();
+            } else if (method === 'AD') {
+                let watchedAds = 0;
+                function playNextAd() {
+                    watchedAds++;
+                    playSimulatedPortraitAd(getRandomInt(15, 25), `Memuat Super Luck Mode dari Sponsor (Iklan ${watchedAds}/2)...`, "🍀 Super Luck Ad", () => {
+                        if (watchedAds < 2) {
+                            playNextAd();
+                        } else {
+                            activateSuperLuck();
+                        }
+                    });
+                }
+                playNextAd();
+            }
+        }
+
+        function activateSuperLuck() {
+            gameState.superLuckSpinsLeft += 10;
+            gameState.superLuckBoughtToday += 1;
+            saveGameState();
+            updateVisualUI();
+            CustomUI.alert("Super Luck Mode diaktifkan! Peluang mendapat Jackpot pada Slot kini meningkat sebesar 15% untuk 10 spin berikutnya.", "Super Luck Aktif!", "🍀");
+        }
+
         function playSlotMachine(method) {
             if (isSlotSpinning) return;
 
@@ -1929,20 +2220,32 @@
             isSlotSpinning = true;
             AudioEngine.init();
             
-            let results = [];
-            for(let i=0; i<4; i++) {
-                results.push(slotFruitSymbols[Math.floor(Math.random() * slotFruitSymbols.length)]);
+            let chance = Math.random();
+            let baseWin4 = 0.05; // 5% peluang dasar
+            let baseWin3 = 0.15; // 15% peluang dasar
+            
+            // Pengaruh Super Luck
+            if (gameState.superLuckSpinsLeft > 0) {
+                baseWin4 += 0.05; // Tambah 5% peluang 4 match (total 10%)
+                baseWin3 += 0.10; // Tambah 10% peluang 3 match (total 25%)
+                gameState.superLuckSpinsLeft -= 1; 
+                saveGameState();
+                updateVisualUI(); 
             }
 
-            // Optional Chance Buffers for better engagement
-            let chance = Math.random();
-            if (chance < 0.05) { 
+            let results = [];
+            
+            if (chance < baseWin4) { 
                 let winSymbol = slotFruitSymbols[Math.floor(Math.random() * slotFruitSymbols.length)];
                 results = [winSymbol, winSymbol, winSymbol, winSymbol]; // 4 Match
-            } else if (chance < 0.15) {
+            } else if (chance < baseWin3) {
                 let winSymbol = slotFruitSymbols[Math.floor(Math.random() * slotFruitSymbols.length)];
                 let otherSymbol = slotFruitSymbols.filter(s => s !== winSymbol)[0];
                 results = [winSymbol, winSymbol, winSymbol, otherSymbol].sort(() => 0.5 - Math.random()); // 3 Match
+            } else {
+                for(let i=0; i<4; i++) {
+                    results.push(slotFruitSymbols[Math.floor(Math.random() * slotFruitSymbols.length)]);
+                }
             }
 
             let spinSoundTick = setInterval(() => { AudioEngine.playSpinSound(); }, 150);
@@ -2040,6 +2343,144 @@
             updateVisualUI();
             saveGameState();
         }
+
+        /* --- TIC TAC TOE LOGIC --- */
+        function initTicTacToeBoard() {
+            const boardDom = document.getElementById('ttt-board');
+            boardDom.innerHTML = '';
+            for (let i = 0; i < 9; i++) {
+                let cell = document.createElement('div');
+                cell.className = 'ttt-cell';
+                cell.setAttribute('data-index', i);
+                cell.addEventListener('click', handleTTTCellClick);
+                boardDom.appendChild(cell);
+            }
+        }
+
+        function resetTicTacToe() {
+            tttBoard = ['', '', '', '', '', '', '', '', ''];
+            tttIsPlayerTurn = true;
+            tttGameOver = false;
+            document.getElementById('ttt-status').innerText = "Giliran Anda (X)";
+            document.getElementById('ttt-status').style.color = "var(--neon-green)";
+            
+            const cells = document.querySelectorAll('.ttt-cell');
+            cells.forEach(cell => {
+                cell.innerText = '';
+                cell.classList.remove('x', 'o');
+            });
+        }
+
+        function checkTTTWin(board) {
+            const winLines = [
+                [0,1,2], [3,4,5], [6,7,8], // Rows
+                [0,3,6], [1,4,7], [2,5,8], // Cols
+                [0,4,8], [2,4,6]           // Diagonals
+            ];
+            for (let line of winLines) {
+                const [a, b, c] = line;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return board[a];
+                }
+            }
+            if (!board.includes('')) return 'DRAW';
+            return null;
+        }
+
+        function getBotTTTMove(board) {
+            const winLines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            
+            // 1. Can Bot win?
+            for(let line of winLines) {
+                const [a,b,c] = line;
+                if(board[a]==='O' && board[b]==='O' && board[c]==='') return c;
+                if(board[a]==='O' && board[c]==='O' && board[b]==='') return b;
+                if(board[b]==='O' && board[c]==='O' && board[a]==='') return a;
+            }
+            // 2. Must Bot block player?
+            for(let line of winLines) {
+                const [a,b,c] = line;
+                if(board[a]==='X' && board[b]==='X' && board[c]==='') return c;
+                if(board[a]==='X' && board[c]==='X' && board[b]==='') return b;
+                if(board[b]==='X' && board[c]==='X' && board[a]==='') return a;
+            }
+            // 3. Take center if free
+            if(board[4]==='') return 4;
+            // 4. Random available space
+            let empty = [];
+            board.forEach((v,i) => { if(v==='') empty.push(i); });
+            if(empty.length > 0) return empty[Math.floor(Math.random()*empty.length)];
+            
+            return -1;
+        }
+
+        function handleTTTCellClick(e) {
+            if (tttGameOver || !tttIsPlayerTurn) return;
+            const index = e.target.getAttribute('data-index');
+            
+            if (tttBoard[index] !== '') return; // Sudah terisi
+
+            // Langkah Player
+            AudioEngine.playTapSound();
+            tttBoard[index] = 'X';
+            e.target.innerText = 'X';
+            e.target.classList.add('x');
+            
+            let result = checkTTTWin(tttBoard);
+            if (result) {
+                endTicTacToe(result);
+                return;
+            }
+
+            // Langkah Bot
+            tttIsPlayerTurn = false;
+            document.getElementById('ttt-status').innerText = "AI Penjaga Berpikir...";
+            document.getElementById('ttt-status').style.color = "var(--text-muted)";
+            
+            setTimeout(() => {
+                if(tttGameOver) return;
+                const botMove = getBotTTTMove(tttBoard);
+                if (botMove !== -1) {
+                    tttBoard[botMove] = 'O';
+                    const botCell = document.querySelector(`.ttt-cell[data-index="${botMove}"]`);
+                    botCell.innerText = 'O';
+                    botCell.classList.add('o');
+                    AudioEngine.playTapSound();
+                }
+
+                result = checkTTTWin(tttBoard);
+                if (result) {
+                    endTicTacToe(result);
+                } else {
+                    tttIsPlayerTurn = true;
+                    document.getElementById('ttt-status').innerText = "Giliran Anda (X)";
+                    document.getElementById('ttt-status').style.color = "var(--neon-green)";
+                }
+            }, 800);
+        }
+
+        function endTicTacToe(result) {
+            tttGameOver = true;
+            document.getElementById('modal-tictactoe').style.display = 'none';
+
+            if (result === 'X') {
+                // Pemain Menang -> Dapat Harta Karun Brankas
+                const loot = getRandomInt(25, 2000);
+                gameState.coins += loot;
+                
+                AudioEngine.playChestSound();
+                document.getElementById('chest-prize-value').innerText = `+ ${loot.toLocaleString('id-ID')} COINS`;
+                document.getElementById('modal-chest-prize').style.display = 'flex';
+                
+                updateVisualUI();
+                saveGameState();
+            } else if (result === 'O') {
+                CustomUI.alert("Anda kalah melawan AI Penjaga Brankas. Harta karun gagal diretas.", "Gagal Membobol", "💀");
+            } else if (result === 'DRAW') {
+                CustomUI.alert("Pertandingan Seri! Brankas mengunci dirinya kembali.", "Draw", "🔒");
+            }
+        }
+        /* --- END TIC TAC TOE LOGIC --- */
 
         function initEventHandlers() {
             document.getElementById('audio-master-switch').addEventListener('click', (e) => {
@@ -2203,7 +2644,9 @@
             document.getElementById('autotap-toggle').addEventListener('change', (e) => {
                 AudioEngine.init();
                 if (e.target.checked) {
-                    let activeSpeed = (gameState.boostActiveUntil > Date.now()) ? 150 : 1200;
+                    let activeSpeed = 1200;
+                    if (gameState.megaBoostActiveUntil > Date.now()) activeSpeed = 92;
+                    else if (gameState.boostActiveUntil > Date.now()) activeSpeed = 150;
                     startAutoTapWorkerLoop(activeSpeed);
                 } else {
                     clearInterval(autoTapInterval);
@@ -2222,16 +2665,38 @@
 
             document.getElementById('btn-boost-coin').addEventListener('click', () => {
                 AudioEngine.init();
-                if (gameState.coins < 300) {
-                    CustomUI.alert("Koin penambangan Anda kurang untuk membeli boost! (Butuh 300 Koin).", "Koin Tidak Cukup", "🪙");
+                if (gameState.coins < 500) {
+                    CustomUI.alert("Koin penambangan Anda kurang untuk membeli boost! (Butuh 500 Koin).", "Koin Tidak Cukup", "🪙");
                     return;
                 }
-                gameState.coins -= 300;
+                gameState.coins -= 500;
                 gameState.boostActiveUntil = Date.now() + (10 * 60 * 1000);
                 saveGameState();
                 updateVisualUI();
                 relinkActiveAutoTapSpeed();
-                CustomUI.alert("Anda membeli paket Turbo seharga 300 Koin. Auto-Tap melesat 8x lebih cepat selama 10 menit.", "Turbo Boost Aktif!", "🚀");
+                CustomUI.alert("Anda membeli paket Turbo seharga 500 Koin. Auto-Tap melesat 8x lebih cepat selama 10 menit.", "Turbo Boost Aktif!", "🚀");
+            });
+
+            document.getElementById('btn-boost-mega').addEventListener('click', () => {
+                AudioEngine.init();
+                if (gameState.megaBoostBoughtToday >= 2) {
+                    CustomUI.alert("Anda telah mencapai batas pembelian Mega Boost hari ini (Maksimal 2x/Hari).", "Kuota Habis", "⚠️");
+                    return;
+                }
+                if (gameState.diamonds < 200 || gameState.coins < 1000) {
+                    CustomUI.alert("Saldo Anda kurang! Mega Boost butuh 250 Diamond + 1.000 Koin.", "Saldo Tidak Cukup", "💎");
+                    return;
+                }
+                
+                gameState.diamonds -= 250;
+                gameState.coins -= 1000;
+                gameState.megaBoostBoughtToday += 1;
+                gameState.megaBoostActiveUntil = Date.now() + (8 * 60 * 1000);
+                
+                saveGameState();
+                updateVisualUI();
+                relinkActiveAutoTapSpeed();
+                CustomUI.alert("SUPER MEGA BOOST Aktif! Kecepatan drone menjadi 13x lipat lebih brutal selama 8 menit kedepan.", "Mega Boost!", "🔥");
             });
 
             document.getElementById('btn-spin').addEventListener('click', () => {
@@ -2295,7 +2760,7 @@
 
             document.getElementById('btn-open-chest').addEventListener('click', () => {
                 if (gameState.chestsLeft <= 0) {
-                    CustomUI.alert("Jatah harian membuka peti harta telah habis tercapai.", "Kuota Habis", "📦");
+                    CustomUI.alert("Jatah harian membuka brankas telah habis (Max 3x sehari).", "Kuota Habis", "📦");
                     return;
                 }
 
@@ -2304,19 +2769,14 @@
                 void cNode.offsetWidth; 
                 cNode.classList.add('chest-opening');
 
-                playSimulatedPortraitAd(getRandomInt(30, 45), "Mendekripsi Kode Akses Brankas...", "🏴‍☠️ Vault Code Decryptor", () => {
-                    AudioEngine.playChestSound();
-                    cNode.innerText = "🔓";
-                    const loot = getRandomInt(25, 2000);
-                    
-                    gameState.coins += loot;
-                    gameState.chestsLeft -= 1;
-
-                    document.getElementById('chest-prize-value').innerText = `+ ${loot.toLocaleString('id-ID')} COINS`;
-                    document.getElementById('modal-chest-prize').style.display = 'flex';
-                    
-                    updateVisualUI();
+                playSimulatedPortraitAd(getRandomInt(30, 45), "Mendekripsi Akses Brankas via Iklan...", "🏴‍☠️ Tembus Firewall", () => {
+                    gameState.chestsLeft -= 1; 
                     saveGameState();
+                    updateVisualUI();
+                    
+                    // Buka Modal Tic Tac Toe
+                    resetTicTacToe();
+                    document.getElementById('modal-tictactoe').style.display = 'flex';
                 });
             });
 
