@@ -968,7 +968,7 @@
                 <div class="card-panel" id="battery-shop-panel">
                     <div class="shop-item">
                         <div class="shop-item_info-text">
-                            <h4>Kapasitas Baterai 1000</h4>
+                            <h4>Kapasitas Baterai 1000 mAh</h4>
                             <p>Opsi pengisian tangki daya standar</p>
                         </div>
                         <div style="display: flex; gap: 5px;">
@@ -978,7 +978,7 @@
                     </div>
                     <div class="shop-item">
                         <div class="shop-item_info-text">
-                            <h4>Kapasitas Baterai 1500</h4>
+                            <h4>Kapasitas Baterai 1500 mAh</h4>
                             <p>Daya tampung ekstra hemat energi</p>
                         </div>
                         <div style="display: flex; gap: 5px;">
@@ -988,7 +988,7 @@
                     </div>
                     <div class="shop-item">
                         <div class="shop-item_info-text">
-                            <h4>Kapasitas Baterai 2500</h4>
+                            <h4>Kapasitas Baterai 2500 mAh</h4>
                             <p>Tangki listrik quantum kapasitas besar</p>
                         </div>
                         <div style="display: flex; gap: 5px;">
@@ -998,7 +998,7 @@
                     </div>
                     <div class="shop-item">
                         <div class="shop-item_info-text">
-                            <h4>Kapasitas Baterai 3000</h4>
+                            <h4>Kapasitas Baterai 3000 mAh</h4>
                             <p>Kapasitas level Master Miner</p>
                         </div>
                         <button class="btn-small" onclick="handleBatteryPurchase(3000, 'COIN')">🪙 1200</button>
@@ -1006,7 +1006,7 @@
                     <!-- BATTERY 5000 BARU -->
                     <div class="shop-item">
                         <div class="shop-item_info-text">
-                            <h4>Kapasitas Baterai 5000</h4>
+                            <h4>Kapasitas Baterai 5000 mAh</h4>
                             <p>Reaktor fusi inti tanpa batas</p>
                         </div>
                         <button class="btn-small" onclick="handleBatteryPurchase(5000, 'DUAL')" style="border-color:var(--neon-blue); color:var(--neon-blue); background:rgba(0,229,255,0.05);">🪙 2.500 + 💎 100</button>
@@ -2684,11 +2684,11 @@
                     return;
                 }
                 if (gameState.diamonds < 200 || gameState.coins < 1000) {
-                    CustomUI.alert("Saldo Anda kurang! Mega Boost butuh 250 Diamond + 1.000 Koin.", "Saldo Tidak Cukup", "💎");
+                    CustomUI.alert("Saldo Anda kurang! Mega Boost butuh 200 Diamond + 1.000 Koin.", "Saldo Tidak Cukup", "💎");
                     return;
                 }
                 
-                gameState.diamonds -= 250;
+                gameState.diamonds -= 200;
                 gameState.coins -= 1000;
                 gameState.megaBoostBoughtToday += 1;
                 gameState.megaBoostActiveUntil = Date.now() + (8 * 60 * 1000);
@@ -2994,3 +2994,6 @@
     </script>
 </body>
 </html>
+
+
+
